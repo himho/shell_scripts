@@ -15,7 +15,7 @@ else
     npm install --loglevel error
 fi
 ##复制外挂配置脚本
-cp -f /shylocks/shell_script_mod.sh /scripts/logs/
+cp -f /shylocks/shell_script_mod.sh /scripts
 ##复制脚本文件
 cp -f /shylocks/jd* /shylocks/sq* /scripts/
 ##复制更新文件
