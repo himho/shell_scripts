@@ -16,7 +16,7 @@ else
 	fi
 ##复制外挂配置脚本
 cat /scripts/docker/crontab_list
-cp -f /shylocks/shell_script_mod.sh /scripts
+cp -f /shylocks/shell_script_mod.sh /scripts/
 ##复制脚本文件
 cp -f /shylocks/jd* /shylocks/sq* /scripts/
 ##复制更新文件
