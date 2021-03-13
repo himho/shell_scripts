@@ -1,7 +1,4 @@
-## 通知频道：
-https://t.me/joinchat/V0oxYENmx2PTlY1L
-## 赞赏码:
-![](https://raw.githubusercontent.com/shylocks/Loon/main/icons/donate.png)
+依据lxk0301大佬的京东脚本跑一些其他脚本，不会运行京东的脚本。只运行其他脚本！
 
 ## 特别声明: 
 
