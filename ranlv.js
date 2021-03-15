@@ -29,6 +29,9 @@ http-request https://ranlv.lvfacn.com/api.php/Common/pvlog script-path=https://r
 const zhiyi = '燃旅视频'
 const $ = Env(zhiyi)
 const notify = $.isNode() ?require('./sendNotify') : '';
+let rlurl = '';
+let  rlheader = '';
+
 let status, videoid,myid,supportvideoid,supportrank,show;
 status = (status = ($.getval("rlstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
 const rlurlArr = [], rlheaderArr = [],rlbodyArr = []
@@ -99,6 +102,11 @@ if ($.isNode()) {
   }
 }
 !(async () => {
+  rlur =  COOKIE.rlur;
+  rlheader = COOKIE. rlheader;
+  $.setdata(cfzurl,'cfzurl');
+  $.setdata(cfzhd,'cfzhd');
+
 if (!rlheaderArr[0] && !rlbodyArr[0] && !rlurlArr[0]) {
     $.msg($.name, '【提示】请先获取燃旅视频一cookie')
     return;
