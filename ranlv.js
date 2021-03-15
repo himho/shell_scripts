@@ -101,6 +101,8 @@ if ($.isNode()) {
     rlbodyArr.push($.getdata(`rlbody${i}`))
   }
 }
+const COOKIE = $.isNode() ? require("./ranlvCOOKIE") : ``;
+
 !(async () => {
   rlur =  COOKIE.rlur;
   rlheader = COOKIE. rlheader;
