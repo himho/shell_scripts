@@ -26,24 +26,23 @@ http-request https://ranlv.lvfacn.com/api.php/Common/pvlog script-path=https://r
 燃旅视频 = type=http-request,pattern=^https://ranlv.lvfacn.com/api.php/Common/pvlog,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/ZhiYi-N/Private-Script/master/Scripts/ranlv.js,script-update-interval=0
 
 */
-const zhiyi = '燃旅视频'
-const $ = Env(zhiyi)
+const zhiyi = '燃旅视频';
+const $ = Env(zhiyi);
 const notify = $.isNode() ?require('./sendNotify') : '';
-let rlurl = '';
-let  rlheader = '';
 
 let status, videoid,myid,supportvideoid,supportrank,show;
 status = (status = ($.getval("rlstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
 const rlurlArr = [], rlheaderArr = [],rlbodyArr = []
-
-
-let rlbody = $.getdata('rlbody')
+let rlurl = $.getdata('rlurl');
+let rlheader = $.getdata('rlheader');
+let rlbody = $.getdata('rlbody');
 let tz = ($.getval('tz') || '1');//0关闭通知，1默认开启
-let cash = ($.getval('rlcash') || '0')//默认不自动提现
+let cash = ($.getval('rlcash') || '0');//默认不自动提现
 const invite=1;//新用户自动邀请，0关闭，1默认开启
 const logs =0;//0为关闭日志，1为开启
-var hour=''
-var minute=''
+var hour='';
+var minute='';
+const COOKIE = $.isNode() ? require("./ranlvCOOKIE") : ``;
 if ($.isNode()) {
    hour = new Date( new Date().getTime() + 8 * 60 * 60 * 1000 ).getHours();
    minute = new Date( new Date().getTime() + 8 * 60 * 60 * 1000 ).getMinutes();
@@ -51,63 +50,72 @@ if ($.isNode()) {
    hour = (new Date()).getHours();
    minute = (new Date()).getMinutes();
 }
-//CK运行
-let isGetCookie = typeof $request !== 'undefined'
-if (isGetCookie) {
-   GetCookie();
-   $.done()
-} 
-if ($.isNode()) {
-   if (process.env.RLURL && process.env.RLURL.indexOf('#') > -1) {
-   rlurl = process.env.RLURL.split('#');
-   console.log(`您选择的是用"#"隔开\n`)
-  }
-  else if (process.env.RLURL && process.env.RLURL.indexOf('\n') > -1) {
-   rlurl = process.env.RLURL.split('\n');
-   console.log(`您选择的是用换行隔开\n`)
-  } else {
-   rlurl = process.env.RLURL.split()
-  };
-  if (process.env.RLHEADER && process.env.RLHEADER.indexOf('#') > -1) {
-   rlheader = process.env.RLHEADER.split('#');
-   console.log(`您选择的是用"#"隔开\n`)
-  }
-  else if (process.env.RLHEADER && process.env.RLHEADER.indexOf('\n') > -1) {
-   rlheader = process.env.RLHEADER.split('\n');
-   console.log(`您选择的是用换行隔开\n`)
-  } else {
-   rlheader = process.env.RLHEADER.split()
-  };
-  if (process.env.RLBODY && process.env.RLBODY.indexOf('#') > -1) {
-   rlbody = process.env.RLBODY.split('#');
-   console.log(`您选择的是用"#"隔开\n`)
-  }
-  else if (process.env.RLBODY && process.env.RLBODY.indexOf('\n') > -1) {
-   rlbody = process.env.RLBODY.split('\n');
-   console.log(`您选择的是用换行隔开\n`)
-  } else {
-   rlbody = process.env.RLBODY.split()
-  };
-    console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
-    console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
- } else {
-    rlurlArr.push($.getdata('rlurl'))
-    rlheaderArr.push($.getdata('rlheader'))
-    rlbodyArr.push($.getdata('rlbody'))
-    let rlcount = ($.getval('rlcount') || '1');
-  for (let i = 2; i <= rlcount; i++) {
-    rlurlArr.push($.getdata(`rlurl${i}`))
-    rlheaderArr.push($.getdata(`rlheader${i}`))
-    rlbodyArr.push($.getdata(`rlbody${i}`))
-  }
-}
-const COOKIE = $.isNode() ? require("./ranlvCOOKIE") : ``;
+
 
 !(async () => {
-  rlur =  COOKIE.rlur;
-  rlheader = COOKIE. rlheader;
-  $.setdata(cfzurl,'cfzurl');
-  $.setdata(cfzhd,'cfzhd');
+  rlurl = COOKIE.rlurlVal;
+  rlheader = COOKIE.rlheaderVal
+  $.setdata(rlurl,`rlurl`)
+  $.setdata(rlheader,`rlheader`)
+
+  rlurlArr.push($.getdata('rlurl'));
+  rlheaderArr.push($.getdata('rlheader'));
+
+  //CK运行
+  //let isGetCookie = typeof $request !== 'undefined'
+  //if (isGetCookie) {
+  //   GetCookie();
+  //   $.done()
+  //} 
+  //if ($.isNode()) {
+  //   if (process.env.RLURL && process.env.RLURL.indexOf('#') > -1) {
+  //   rlurl = process.env.RLURL.split('#');
+  //   console.log(`您选择的是用"#"隔开\n`)
+  //  }
+  //  else if (process.env.RLURL && process.env.RLURL.indexOf('\n') > -1) {
+  //   rlurl = process.env.RLURL.split('\n');
+  //   console.log(`您选择的是用换行隔开\n`)
+  //  } else {
+  //   //rlurl = process.env.RLURL.split()
+  //   rlurl = COOKIE.rlurlVal.split('\n');
+  //  };
+  //  if (process.env.RLHEADER && process.env.RLHEADER.indexOf('#') > -1) {
+  //   rlheader = process.env.RLHEADER.split('#');
+  //   console.log(`您选择的是用"#"隔开\n`)
+  //  }
+  //  else if (process.env.RLHEADER && process.env.RLHEADER.indexOf('\n') > -1) {
+  //   rlheader = process.env.RLHEADER.split('\n');
+  //   console.log(`您选择的是用换行隔开\n`)
+  //  } else {
+  //   //rlheader = process.env.RLHEADER.split();
+  //   rlheader = COOKIE.rlheaderVal.split('\n');
+  //  };
+  //  if (process.env.RLBODY && process.env.RLBODY.indexOf('#') > -1) {
+  //   rlbody = process.env.RLBODY.split('#');
+  //   console.log(`您选择的是用"#"隔开\n`)
+  //  }
+  //  else if (process.env.RLBODY && process.env.RLBODY.indexOf('\n') > -1) {
+  //   rlbody = process.env.RLBODY.split('\n');
+  //   console.log(`您选择的是用换行隔开\n`)
+  //  } else {
+  //   //rlbody = process.env.RLBODY.split();
+  //   //rlbody = COOKIE.rlbodyVal.split('\n');
+  //  };
+      console.log(`============ 脚本执行-国际标准时间(UTC)：${new Date().toLocaleString()}  =============\n`)
+      console.log(`============ 脚本执行-北京时间(UTC+8)：${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toLocaleString()}  =============\n`)
+  // } else {
+  //    rlurlArr.push($.getdata('rlurl'))
+  //    rlheaderArr.push($.getdata('rlheader'))
+  //    rlbodyArr.push($.getdata('rlbody'))
+  //    let rlcount = ($.getval('rlcount') || '1');
+  //  for (let i = 2; i <= rlcount; i++) {
+  //    rlurlArr.push($.getdata(`rlurl${i}`))
+  //    rlheaderArr.push($.getdata(`rlheader${i}`))
+  //    rlbodyArr.push($.getdata(`rlbody${i}`))
+  //  }
+  
+
+
 
 if (!rlheaderArr[0] && !rlbodyArr[0] && !rlurlArr[0]) {
     $.msg($.name, '【提示】请先获取燃旅视频一cookie')
