@@ -2,6 +2,7 @@
 #@shylocks仓库脚本
 function initShylocks() {
     git clone https://github.com/himho/shell_scripts.git /shylocks
+    git clone https://github.com/ziye888/JavaScript.git /shylocks
     npm install
 }
 
